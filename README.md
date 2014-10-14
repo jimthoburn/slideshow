@@ -1,4 +1,4 @@
-slideshow
+Slideshow
 =========
 
-A simple slideshow, that could be converted into a movie.
+A simple slideshow, that could conceivably be converted into a movie.
