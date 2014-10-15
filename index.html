@@ -5,27 +5,9 @@
   <meta charset="utf-8" />
   <title>Slideshow</title>
 
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
   <style>
-
-    @keyframes fade-in {
-      0% {
-        opacity: 0;
-      }
-      100% {
-        opacity: 1;
-      }
-    }
-
-    @-webkit-keyframes fade-in {
-      0% {
-        opacity: 0;
-      }
-      100% {
-        opacity: 1;
-      }
-    }
-
-
     html, body {
       height: 100%;
     }
@@ -44,47 +26,12 @@
       background-position: center;
       opacity: 0;
     }
-    div.active {
-      opacity: 1;
-
-      animation-duration: 1.2s;
-      animation-name: fade-in;
-      animation-fill-mode: forwards;
-      animation-timing-function: ease;
-
-      -webkit-animation-duration: 1.2s;
-      -webkit-animation-name: fade-in;
-      -webkit-animation-fill-mode: forwards;
-      -webkit-animation-timing-function: ease;
-    }
-    div.inactive {
-
-      animation-duration: 1.2s;
-      animation-name: fade-in;
-      animation-fill-mode: forwards;
-      animation-timing-function: ease;
-      animation-direction: reverse;
-
-      -webkit-animation-duration: 1.2s;
-      -webkit-animation-name: fade-in;
-      -webkit-animation-fill-mode: forwards;
-      -webkit-animation-timing-function: ease;
-      -webkit-animation-direction: reverse;
-    }
-    div.start {
-      opacity: 1;
-    }
-    div.paused {
-      animation-play-state: paused;
-
-      -webkit-animation-play-state: paused;
-    }
   </style>
 
 </head>
 <body>
 
-  <div class="start" style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0326.jpg);"></div>
+  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0326.jpg); opacity: 1;"></div>
   <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0327.jpg);"></div>
   <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0328.jpg);"></div>
   <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0329.jpg);"></div>
@@ -181,27 +128,50 @@
       this.resume();
     }
 
+    var previous;
     function next() {
-      slides[cursor].className = "inactive";
-
+      previous = slides[cursor];
+      previous.style.zIndex = 1;
       cursor++;
       if (cursor >= slides.length) cursor = 0;
 
-      slides[cursor].className = "active";
+      slides[cursor].style.opacity = 0;
+      slides[cursor].style.zIndex = 10;
+      fadeIn();
+    }
+
+    function fadeIn() {
+      $(slides[cursor]).animate({
+        opacity: 1,
+      }, 1200, "linear", function() {
+        if (previous) {
+          previous.style.opacity = 0;
+        }
+      });
     }
 
     function pause() {
       timer.pause();
-      slides[cursor].className += " paused";
+      $(slides[cursor]).stop();
     }
 
     function play() {
       timer.resume();
-      slides[cursor].className = slides[cursor].className.replace(/paused/g, "");
+      fadeIn();
     }
 
-    var timer = new RecurringTimer(next, 3000);
-    pause();
+    var framesPerSecond = 30;
+    var slideDuration = framesPerSecond * 3;
+
+    var frameDuration = Math.round(1000 / framesPerSecond);
+
+    function step() {
+      play();
+      setTimeout(pause, frameDuration);
+    }
+
+    var timer = new RecurringTimer(next, frameDuration * slideDuration);
+    //pause();
 
   </script>
 
