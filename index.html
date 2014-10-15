@@ -5,8 +5,6 @@
   <meta charset="utf-8" />
   <title>Slideshow</title>
 
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-
   <style>
     html, body {
       height: 100%;
@@ -102,76 +100,55 @@
 
   <script>
 
+    var framesPerSecond = 30;
+    var slideDuration = framesPerSecond * 3;
+    var fadeDuration = framesPerSecond * 1.2;
+
     var slides = document.getElementsByTagName("div");
     var cursor = 0;
 
-    // KUDOS: http://stackoverflow.com/questions/7279567/how-do-i-pause-a-window-setinterval-in-javascript#answer-7282347
-    function RecurringTimer(callback, delay) {
-      var timerId, start, remaining = delay;
-
-      this.pause = function() {
-        window.clearTimeout(timerId);
-        remaining -= new Date() - start;
-      };
-
-      var resume = function() {
-        start = new Date();
-        timerId = window.setTimeout(function() {
-          remaining = delay;
-          resume();
-          callback();
-        }, remaining);
-      };
-
-      this.resume = resume;
-
-      this.resume();
-    }
-
     var previous;
+
     function next() {
       previous = slides[cursor];
       previous.style.zIndex = 1;
+
       cursor++;
       if (cursor >= slides.length) cursor = 0;
 
       slides[cursor].style.opacity = 0;
       slides[cursor].style.zIndex = 10;
-      fadeIn();
     }
 
-    function fadeIn() {
-      $(slides[cursor]).animate({
-        opacity: 1,
-      }, 1200, "linear", function() {
-        if (previous) {
-          previous.style.opacity = 0;
-        }
-      });
-    }
-
-    function pause() {
-      timer.pause();
-      $(slides[cursor]).stop();
-    }
-
-    function play() {
-      timer.resume();
-      fadeIn();
-    }
-
-    var framesPerSecond = 30;
-    var slideDuration = framesPerSecond * 3;
-
-    var frameDuration = Math.round(1000 / framesPerSecond);
-
+    var stepCounter = 0;
     function step() {
-      play();
-      setTimeout(pause, frameDuration);
+      stepCounter++;
+      if (stepCounter <= fadeDuration) {
+        // Fade over time
+        slides[cursor].style.opacity = Number(slides[cursor].style.opacity) + (1 / fadeDuration);
+        if (previous) previous.style.opacity = Number(previous.style.opacity) - (1 / fadeDuration);
+      } else {
+        // If we’re finished, snap to the appropriate values
+        slides[cursor].style.opacity = 1;
+        if (previous) previous.style.opacity = 0;
+      }
+      if (stepCounter >= slideDuration) {
+        next();
+        stepCounter = 0;
+      }
     }
 
-    var timer = new RecurringTimer(next, frameDuration * slideDuration);
-    pause();
+    // For testing…
+    var timer;
+    function play() {
+      if (!timer) timer = setInterval(step, Math.round(1000 / framesPerSecond));
+    }
+    function pause() {
+      if (timer) {
+        clearInterval(timer);
+        timer = undefined;
+      }
+    }
 
   </script>
 
