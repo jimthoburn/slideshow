@@ -6,6 +6,26 @@
   <title>Slideshow</title>
 
   <style>
+
+    @keyframes fade-in {
+      0% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+
+    @-webkit-keyframes fade-in {
+      0% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+
+
     html, body {
       height: 100%;
     }
@@ -23,18 +43,48 @@
       background-size: cover;
       background-position: center;
       opacity: 0;
-      -webkit-transition: opacity 1.2s;
-      transition: opacity 1.2s;
     }
     div.active {
       opacity: 1;
+
+      animation-duration: 1.2s;
+      animation-name: fade-in;
+      animation-fill-mode: forwards;
+      animation-timing-function: ease;
+
+      -webkit-animation-duration: 1.2s;
+      -webkit-animation-name: fade-in;
+      -webkit-animation-fill-mode: forwards;
+      -webkit-animation-timing-function: ease;
+    }
+    div.inactive {
+
+      animation-duration: 1.2s;
+      animation-name: fade-in;
+      animation-fill-mode: forwards;
+      animation-timing-function: ease;
+      animation-direction: reverse;
+
+      -webkit-animation-duration: 1.2s;
+      -webkit-animation-name: fade-in;
+      -webkit-animation-fill-mode: forwards;
+      -webkit-animation-timing-function: ease;
+      -webkit-animation-direction: reverse;
+    }
+    div.start {
+      opacity: 1;
+    }
+    div.paused {
+      animation-play-state: paused;
+
+      -webkit-animation-play-state: paused;
     }
   </style>
 
 </head>
 <body>
 
-  <div class="active" style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0326.jpg);"></div>
+  <div class="start" style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0326.jpg);"></div>
   <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0327.jpg);"></div>
   <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0328.jpg);"></div>
   <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0329.jpg);"></div>
@@ -108,16 +158,49 @@
     var slides = document.getElementsByTagName("div");
     var cursor = 0;
 
+    // KUDOS: http://stackoverflow.com/questions/7279567/how-do-i-pause-a-window-setinterval-in-javascript#answer-7282347
+    function RecurringTimer(callback, delay) {
+      var timerId, start, remaining = delay;
+
+      this.pause = function() {
+        window.clearTimeout(timerId);
+        remaining -= new Date() - start;
+      };
+
+      var resume = function() {
+        start = new Date();
+        timerId = window.setTimeout(function() {
+          remaining = delay;
+          resume();
+          callback();
+        }, remaining);
+      };
+
+      this.resume = resume;
+
+      this.resume();
+    }
+
     function next() {
-      slides[cursor].className = slides[cursor].className.replace(/active/g, "");
+      slides[cursor].className = "inactive";
 
       cursor++;
       if (cursor >= slides.length) cursor = 0;
 
-      slides[cursor].className += " active";
+      slides[cursor].className = "active";
     }
 
-    setInterval(next, 3000);
+    function pause() {
+      timer.pause();
+      slides[cursor].className += " paused";
+    }
+
+    function play() {
+      timer.resume();
+      slides[cursor].className = slides[cursor].className.replace(/paused/g, "");
+    }
+
+    var timer = new RecurringTimer(next, 3000);
 
   </script>
 
