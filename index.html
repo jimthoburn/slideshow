@@ -29,7 +29,7 @@
 </head>
 <body>
 
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0326.jpg); opacity: 1;"></div>
+  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0326.jpg);"></div>
   <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0327.jpg);"></div>
   <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0328.jpg);"></div>
   <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0329.jpg);"></div>
@@ -100,15 +100,21 @@
 
   <script>
 
-    var framesPerSecond = 30;
-    var slideDuration = framesPerSecond * 3;
-    var fadeDuration = framesPerSecond * 1.2;
+    var framesPerSecond     = 30;
+    var framesPerSlide      = framesPerSecond * 3.0; // Seconds
+    var framesPerTransition = framesPerSecond * 1.2; // Seconds
 
     var slides = document.getElementsByTagName("div");
     var cursor = 0;
-
+    var stepCounter = 0;
     var previous;
 
+
+    // Show the first slide
+    slides[cursor].style.opacity = 1;
+
+
+    // Show the next slide
     function next() {
       previous = slides[cursor];
       previous.style.zIndex = 1;
@@ -120,23 +126,29 @@
       slides[cursor].style.zIndex = 10;
     }
 
-    var stepCounter = 0;
+
+    // Show the next frame
     function step() {
       stepCounter++;
-      if (stepCounter <= fadeDuration) {
+
+      // Transition
+      if (stepCounter <= framesPerTransition) {
         // Fade over time
-        slides[cursor].style.opacity = Number(slides[cursor].style.opacity) + (1 / fadeDuration);
-        if (previous) previous.style.opacity = Number(previous.style.opacity) - (1 / fadeDuration);
+        slides[cursor].style.opacity = Number(slides[cursor].style.opacity) + (1 / framesPerTransition);
+        if (previous) previous.style.opacity = Number(previous.style.opacity) - (1 / framesPerTransition);
       } else {
         // If we’re finished, snap to the appropriate values
         slides[cursor].style.opacity = 1;
         if (previous) previous.style.opacity = 0;
       }
-      if (stepCounter >= slideDuration) {
+
+      // Next Slide
+      if (stepCounter >= framesPerSlide) {
         next();
         stepCounter = 0;
       }
     }
+
 
     // For testing…
     var timer;
