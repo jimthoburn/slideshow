@@ -127,22 +127,39 @@
     }
 
 
+    // KUDOS: http://gizma.com/easing
+    // t: current time, b: begInnIng value, c: change In value, d: duration
+    function linear(t, b, c, d) {
+      return c*t/d + b;
+    }
+    function easeOutQuad(t, b, c, d) {
+      t /= d;
+      return -c * t*(t-2) + b;
+    }
+    function easeInOutQuad(t, b, c, d) {
+      t /= d/2;
+      if (t < 1) return c/2*t*t + b;
+      t--;
+      return -c/2 * (t*(t-2) - 1) + b;
+    }
+
+
     // Show the next frame
     function step() {
       stepCounter++;
 
-      // Transition
       if (stepCounter <= framesPerTransition) {
-        // Fade over time
-        slides[cursor].style.opacity = Number(slides[cursor].style.opacity) + (1 / framesPerTransition);
-        if (previous) previous.style.opacity = Number(previous.style.opacity) - (1 / framesPerTransition);
+        // Fade in
+        if (Number(slides[cursor].style.opacity) < 1) slides[cursor].style.opacity = easeOutQuad(stepCounter, 0, 1, framesPerTransition);
+        // Fade out
+        if (previous) previous.style.opacity = 1 - easeOutQuad(stepCounter, 0, 1, framesPerTransition);
+
       } else {
         // If we’re finished, snap to the appropriate values
         slides[cursor].style.opacity = 1;
         if (previous) previous.style.opacity = 0;
       }
 
-      // Next Slide
       if (stepCounter >= framesPerSlide) {
         next();
         stepCounter = 0;
