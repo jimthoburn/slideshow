@@ -120,7 +120,10 @@
       previous.style.zIndex = 1;
 
       cursor++;
-      if (cursor >= slides.length) cursor = 0;
+      if (cursor >= slides.length) {
+        console.log('done');
+        cursor = 0;
+      }
 
       slides[cursor].style.opacity = 0;
       slides[cursor].style.zIndex = 10;
@@ -164,6 +167,8 @@
         next();
         stepCounter = 0;
       }
+
+      console.log('step');
     }
 
 
@@ -178,6 +183,9 @@
         timer = undefined;
       }
     }
+    play();
+
+    console.log('ready');
 
   </script>
 
