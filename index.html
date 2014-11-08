@@ -1,19 +1,61 @@
 <!doctype html>
-<html lang-"en" dir="ltr">
+<html lang="en" dir="ltr">
 <head>
 
   <meta charset="utf-8" />
   <title>Slideshow</title>
 
   <style>
+
+    /* =Third Party Fonts
+    -----------------------------------------------
+    This CSS resource incorporates links to font software which is the valuable copyrighted
+    property of Monotype Imaging and/or its suppliers. You may not attempt to copy, install,
+    redistribute, convert, modify or reverse engineer this font software. Please contact Monotype
+    Imaging with any questions regarding Web Fonts:  http://webfonts.fonts.com
+    ----------------------------------------------- */
+    @font-face{
+    font-family:"Proxima Nova";
+    src:url("fonts/7e90123f-e4a7-4689-b41f-6bcfe331c00a.eot?#iefix");
+    src:url("fonts/7e90123f-e4a7-4689-b41f-6bcfe331c00a.eot?#iefix") format("eot"),url("fonts/e56ecb6d-da41-4bd9-982d-2d295bec9ab0.woff") format("woff"),url("fonts/2aff4f81-3e97-4a83-9e6c-45e33c024796.ttf") format("truetype"),url("fonts/ab9cd062-380f-4b53-b1a7-c0bec7402235.svg#ab9cd062-380f-4b53-b1a7-c0bec7402235") format("svg");
+    font-weight: normal;
+    font-style: normal;
+    }
+    @font-face{
+    font-family:"Proxima Nova";
+    src:url("fonts/bc15a635-a09b-40d1-a5c4-70310166177d.eot?#iefix");
+    src:url("fonts/bc15a635-a09b-40d1-a5c4-70310166177d.eot?#iefix") format("eot"),url("fonts/9c69c878-2255-4027-8632-ed3635cddf45.woff") format("woff"),url("fonts/b7eb3871-e910-4522-9982-effb425a2714.ttf") format("truetype"),url("fonts/a0d89860-20e5-4bc0-b6c5-eae8ae0ebbbf.svg#a0d89860-20e5-4bc0-b6c5-eae8ae0ebbbf") format("svg");
+    font-weight: normal;
+    font-style: italic;
+    }
+    @font-face{
+    font-family:"Proxima Nova";
+    src:url("fonts/fbc6b03a-b3a1-427c-a884-053deca3a53c.eot?#iefix");
+    src:url("fonts/fbc6b03a-b3a1-427c-a884-053deca3a53c.eot?#iefix") format("eot"),url("fonts/d999c07b-a049-4eb5-b8a6-4f36ae25e67e.woff") format("woff"),url("fonts/4d4a75f5-d32a-4a09-8665-133afd39cc37.ttf") format("truetype"),url("fonts/8152bc4e-d700-4c78-b6be-326893e6f53f.svg#8152bc4e-d700-4c78-b6be-326893e6f53f") format("svg");
+    font-weight: bold;
+    font-style: normal;
+    }
+    @font-face{
+    font-family:"Proxima Nova";
+    src:url("fonts/9fbce143-f5db-4c0b-9159-b1e666079f67.eot?#iefix");
+    src:url("fonts/9fbce143-f5db-4c0b-9159-b1e666079f67.eot?#iefix") format("eot"),url("fonts/19dd5cf2-ac2d-48d5-901a-c432fd291ee2.woff") format("woff"),url("fonts/22cfbfa4-f607-4751-92eb-6fa194353e57.ttf") format("truetype"),url("fonts/3d6b6348-e05f-4123-b19a-3bfd02c7f361.svg#3d6b6348-e05f-4123-b19a-3bfd02c7f361") format("svg");
+    font-weight: 900;
+    font-style: normal;
+    }
+
+
+    /* =Elements
+    ----------------------------------------------- */
     html, body {
       height: 100%;
     }
     body {
+      font: 100%/1.25 "Proxima Nova", "Helvetica Neue", Helvetica, Arial, sans-serif;
       padding: 0;
       margin: 0;
+      font-size: 2.666666667vw;
     }
-    div {
+    .slide {
       position: absolute;
       top: 0;
       left: 0;
@@ -23,96 +65,192 @@
       background-size: cover;
       background-position: center;
       opacity: 0;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      align-content: center;
+      justify-content: center;
+    }
+    .ctzn {
+      position: absolute;
+      bottom: 1.25em;
+      right: 1.25em;
+      width: 6.25em;
+      height: 2.5em;
+      opacity: 0.4;
+      z-index: 9999; /* @infinity */
+    }
+    .push {
+      padding: 3.75em;
+      font-weight: bold;
+    }
+    .push h1 {
+      font-size: 3em;
+      color: black;
+      margin: 0;
+    }
+    .push p {
+      font-size: 3em;
+      color: white;
+      margin: 0;
+    }
+    .title {
+      padding: 1.25em;
+      text-align: center;
+    }
+    .title:before {
+      content: "";
+      display: block;
+      background: black;
+      background: rgba(0, 0, 0, 0.7);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .title h1 {
+      font-size: 4.5em;
+      color: white;
+      margin: 0;
+      position: relative;
+      z-index: 1;
+    }
+    .avatar {
+      position: absolute;
+      bottom: 1.25em;
+      left: 1.25em;
+      color: white;
+    }
+    .avatar img {
+      border-radius: 100%;
+      vertical-align: middle;
+      margin-right: 0.25em;
+    }
+    .credits {
+      padding: 1.25em;
+      text-align: center;
+      color: white;
+    }
+    .credits h1 {
+      font-size: 2em;
+      margin: 0 0 1.5em;
+    }
+    .credits img {
+      border-radius: 100%;
+      vertical-align: middle;
     }
   </style>
 
 </head>
 <body>
 
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0326.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0327.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0328.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0329.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0330.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0331.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0332.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0333.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0334.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0335.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0336.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0337.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0338.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0339.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0340.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0341.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0342.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0343.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0344.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0345.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0346.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0347.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0348.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0349.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0350.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0351.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0352.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0353.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0354.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0355.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0356.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0357.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0358.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0359.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0360.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0361.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0362.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0363.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0364.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0365.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0366.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0367.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0368.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0369.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0370.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0371.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0372.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0373.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0374.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0375.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0376.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0377.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0378.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0379.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0380.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0381.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0382.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0383.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0384.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0385.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0386.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0387.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0388.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0389.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0390.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0391.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0392.jpg);"></div>
-  <div style="background-image: url(http://jimthoburn.com/unique-la/medium/IMG_0393.jpg);"></div>
+  <div class="slide" style="background-color: rgb(136, 129, 240);">
+    <div class="push">
+      <h1>Project Citizen:</h1>
+      <p>Helping social creatives celebrate the work they do</p>
+    </div>
+  </div>
+  <div class="slide" style="background-image: url(http://images-3.good.is/albums/crop?image_url=https%3A%2F%2Fs3.amazonaws.com%2Fctzn.good.is%2Fa195223db8e3663e2f26d295084a53e8a26f9302&amp;geometry=600x600%23);">
+    <div class="title">
+      <h1>Our First Event: The Kickback</h1>
+    </div>
+  </div>
+  <div class="slide" style="background-image: url(http://images-3.good.is/albums/crop?image_url=https%3A%2F%2Fs3.amazonaws.com%2Fctzn.good.is%2Fa195223db8e3663e2f26d295084a53e8a26f9302&amp;geometry=600x600%23);">
+    <div class="avatar">
+      <img src="http://assets.goodstatic.com/s3/prod/users/avatars/002/053/493/original/key-west.JPG=c60x60" width="40" height="40" alt="" />
+      Craig O.
+    </div>
+  </div>
+  <div class="slide" style="background-image: url(http://images-3.good.is/albums/crop?image_url=https%3A%2F%2Fs3.amazonaws.com%2Fctzn.good.is%2F2e3bc08ed2a4182a79251a9200a3ebe22edf4a9f&amp;geometry=600x600%23);">
+    <div class="avatar">
+      <img src="http://assets.goodstatic.com/s3/prod/users/avatars/002/292/104/original/195670_1043164079_987381920_n.jpg=c60x60" width="40" height="40" alt="" />
+      Jelena W.
+    </div>
+  </div>
+  <div class="slide" style="background-image: url(http://images-1.good.is/albums/crop?image_url=https%3A%2F%2Fs3.amazonaws.com%2Fdevelopment.citizen.good.is%2F7884b7cdabf53718d489a707d100282db39d4614&amp;geometry=600x600%3E);">
+    <div class="avatar">
+      <img src="http://assets.goodstatic.com/s3/prod/avatars/1144037/original/bw_caseycaplowe.jpg=c60x60" width="40" height="40" alt="" />
+      Casey C.
+    </div>
+  </div>
+  <div class="slide" style="background-image: url(http://images-1.good.is/albums/crop?image_url=https%3A%2F%2Fs3.amazonaws.com%2Fdevelopment.citizen.good.is%2F3821cdbc291288cbccd99fe4b3ce7a70f5149ba1&amp;geometry=600x600%3E);">
+    <div class="avatar">
+      <img src="http://assets.goodstatic.com/s3/prod/users/avatars/002/292/104/original/195670_1043164079_987381920_n.jpg=c60x60" width="40" height="40" alt="" />
+      Jelena W.
+    </div>
+  </div>
+  <div class="slide" style="background-image: url(http://images-1.good.is/albums/crop?image_url=https%3A%2F%2Fs3.amazonaws.com%2Fdevelopment.citizen.good.is%2F8bbfcde5323db390d3b9930593ef54a5ba3b41b2&amp;geometry=600x600%3E);">
+    <div class="avatar">
+      <img src="http://assets.goodstatic.com/s3/prod/users/avatars/002/292/104/original/195670_1043164079_987381920_n.jpg=c60x60" width="40" height="40" alt="" />
+      Jelena W.
+    </div>
+  </div>
+  <div class="slide" style="background-image: url(http://images-1.good.is/albums/crop?image_url=https%3A%2F%2Fs3.amazonaws.com%2Fdevelopment.citizen.good.is%2Ff430b8995a18b042c1963c132c17ad4218276de4&amp;geometry=600x600%3E);">
+    <div class="avatar">
+      <img src="https://avatars0.githubusercontent.com/u/68444?v=3&amp;s=460" width="40" height="40" alt="" />
+      Anton S.
+    </div>
+  </div>
+  <div class="slide" style="background-image: url(http://images-1.good.is/albums/crop?image_url=https%3A%2F%2Fs3.amazonaws.com%2Fdevelopment.citizen.good.is%2Fc862361c852d279c2f39b39702f32049d797b53a&amp;geometry=600x600%3E);">
+    <div class="avatar">
+      <img src="http://assets.goodstatic.com/s3/prod/users/avatars/002/292/104/original/195670_1043164079_987381920_n.jpg=c60x60" width="40" height="40" alt="" />
+      Jelena W.
+    </div>
+  </div>
+  <div class="slide" style="background-image: url(http://images-1.good.is/albums/crop?image_url=https%3A%2F%2Fs3.amazonaws.com%2Fdevelopment.citizen.good.is%2F31310cc1bfb87c193d6cc61e08c90a526209a12b&amp;geometry=600x600%3E);">
+    <div class="avatar">
+      <img src="http://assets.goodstatic.com/s3/prod/users/avatars/002/292/104/original/195670_1043164079_987381920_n.jpg=c60x60" width="40" height="40" alt="" />
+      Jelena W.
+    </div>
+  </div>
+  <div class="slide" style="background-image: url(http://images-1.good.is/albums/crop?image_url=https%3A%2F%2Fs3.amazonaws.com%2Fdevelopment.citizen.good.is%2F31310cc1bfb87c193d6cc61e08c90a526209a12b&amp;geometry=600x600%3E);">
+    <div class="credits">
+      <h1>Proud to be pushing together on Project Citizen</h1>
+      <div class="avatar-list">
+        <p>Images from</p>
+        <img src="http://assets.goodstatic.com/s3/prod/users/avatars/002/053/493/original/key-west.JPG=c60x60" width="40" height="40" alt="" />
+        <img src="http://assets.goodstatic.com/s3/prod/users/avatars/002/292/104/original/195670_1043164079_987381920_n.jpg=c60x60" width="40" height="40" alt="" />
+        <img src="http://assets.goodstatic.com/s3/prod/avatars/1144037/original/bw_caseycaplowe.jpg=c60x60" width="40" height="40" alt="" />
+        <img src="https://avatars0.githubusercontent.com/u/68444?v=3&amp;s=460" width="40" height="40" alt="" />
+      </div>
+    </div>
+  </div>
+
+  <svg class="ctzn" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 38">
+    <path fill="white" d="M8.776,36.702c-1.789-0.744-3.338-1.779-4.644-3.106S1.81,30.66,1.086,28.77C0.362,26.88,0,24.789,0,22.498
+      c0-2.292,0.362-4.373,1.086-6.243c0.724-1.87,1.739-3.478,3.046-4.825s2.855-2.382,4.644-3.106c1.789-0.724,3.75-1.086,5.881-1.086
+      c2.573,0,4.735,0.432,6.484,1.297c1.749,0.864,3.026,1.759,3.83,2.684l-4.765,7.057c-0.523-0.603-1.136-1.096-1.84-1.478
+      c-0.704-0.382-1.518-0.573-2.443-0.573c-1.528,0-2.825,0.543-3.89,1.629c-1.066,1.086-1.598,2.634-1.598,4.644
+      c0,2.01,0.533,3.569,1.598,4.674c1.066,1.106,2.362,1.659,3.89,1.659c0.925,0,1.739-0.201,2.443-0.603
+      c0.704-0.402,1.317-0.905,1.84-1.508l4.765,7.117c-0.804,0.925-2.081,1.819-3.83,2.684c-1.749,0.864-3.91,1.297-6.484,1.297
+      C12.525,37.818,10.565,37.446,8.776,36.702z"/>
+    <path fill="white" d="M31.604,35.616c-1.448-1.468-2.171-3.689-2.171-6.665V16.768h-3.679V7.962h3.679V0h10.193v7.962h4.584
+      v8.806h-4.584v9.59c0,0.764,0.161,1.367,0.482,1.809s0.784,0.663,1.387,0.663c0.362,0,0.714-0.05,1.056-0.151
+      c0.342-0.101,0.573-0.231,0.694-0.392l1.689,7.962c-0.563,0.442-1.397,0.814-2.503,1.116c-1.106,0.302-2.423,0.452-3.951,0.452
+      C35.344,37.818,33.052,37.084,31.604,35.616z"/>
+    <path fill="white" d="M47.346,29.615l9.469-12.847h-9.469V7.962h22.558v7.177l-9.59,13.149h9.831v8.806H47.346V29.615z"/>
+    <path fill="white" d="M89.807,19.482c0-1.166-0.261-2-0.784-2.503c-0.523-0.503-1.267-0.754-2.232-0.754
+      s-1.759,0.282-2.383,0.844c-0.623,0.563-1.116,1.126-1.478,1.689v18.336H72.798V7.962h10.133v3.378
+      c0.724-1.005,1.86-1.94,3.408-2.805c1.548-0.865,3.327-1.297,5.338-1.297c2.935,0,5.056,0.774,6.363,2.322
+      c1.307,1.548,1.96,3.468,1.96,5.76v21.774H89.807V19.482z"/>
+  </svg>
 
   <script>
 
     var framesPerSecond     = 30;
-    var framesPerSlide      = framesPerSecond * 3.0; // Seconds
-    var framesPerTransition = framesPerSecond * 1.2; // Seconds
+    var framesPerSlide      = framesPerSecond * 3; // Seconds
+    var framesPerTransition = framesPerSecond * 0; // Seconds
 
-    var slides = document.getElementsByTagName("div");
+    var slides;
     var cursor = 0;
     var stepCounter = 0;
     var previous;
 
-
+    slides = document.querySelectorAll(".slide");
     // Show the first slide
     slides[cursor].style.opacity = 1;
-
 
     // Show the next slide
     function next() {
